@@ -18,7 +18,7 @@ public class Conta {
     }
     public Conta(Integer numero, BigDecimal saldo, Cliente titular) {
         this.numero = numero;
-        this.saldo = BigDecimal.ZERO;
+        this.saldo = saldo;
         this.titular = titular;
     }
 
@@ -28,10 +28,6 @@ public class Conta {
 
     public void sacar(BigDecimal valor) {
         this.saldo = this.saldo.subtract(valor);
-    }
-
-    public void depositar(BigDecimal valor) {
-        this.saldo = this.saldo.add(valor);
     }
 
     @Override

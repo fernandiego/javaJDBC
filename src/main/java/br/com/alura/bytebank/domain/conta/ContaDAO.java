@@ -62,7 +62,7 @@ public class ContaDAO {
 
                 DadosCadastroCliente dadosCadastroCliente = new DadosCadastroCliente(nome, cpf, email);
                 Cliente cliente = new Cliente(dadosCadastroCliente);
-                contas.add(new Conta(numero, cliente));
+                contas.add(new Conta(numero, saldo, cliente));
             }
             resultSet.close();
             ps.close();
@@ -72,6 +72,7 @@ public class ContaDAO {
         }
         return contas;
     }
+
     public Conta listarPorNumero(Integer numero) {
         String sql = "SELECT * FROM conta WHERE numero = ?";
 
@@ -103,5 +104,24 @@ public class ContaDAO {
             throw new RuntimeException(e);
         }
         return conta;
+    }
+
+    @SuppressWarnings("JpaQueryApiInspection")
+    public void alterar(Integer numero, BigDecimal valor) {
+        PreparedStatement ps;
+        String sql = "UPDATE conta SET saldo = saldo + ? WHERE numero = ?";
+
+        try {
+            ps = conn.prepareStatement(sql);
+
+            ps.setBigDecimal(1, valor);
+            ps.setInt(2, numero);
+
+            ps.execute();
+            ps.close();
+            conn.close();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

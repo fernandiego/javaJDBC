@@ -136,7 +136,7 @@ public class BytebankApplication {
         System.out.println("Digite o valor do depósito:");
         var valor = teclado.nextBigDecimal();
 
-        service.realizarDeposito(numeroDaConta, valor);
+         service.realizarDeposito(numeroDaConta, valor);
 
         System.out.println("Depósito realizado com sucesso!");
         System.out.println("Pressione qualquer tecla e de ENTER para voltar ao menu principal");

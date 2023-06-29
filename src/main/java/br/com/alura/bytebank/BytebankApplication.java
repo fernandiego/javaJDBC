@@ -101,14 +101,23 @@ public class BytebankApplication {
     }
 
     private static void encerrarConta() {
+//        System.out.println("Digite o número da conta:");
+//        var numeroDaConta = teclado.nextInt();
+//
+//        service.encerrar(numeroDaConta);
+//
+//        System.out.println("Conta encerrada com sucesso!");
+//        System.out.println("Pressione ENTER para voltar ao menu principal");
+//        teclado.next();
         System.out.println("Digite o número da conta:");
         var numeroDaConta = teclado.nextInt();
 
-        service.encerrar(numeroDaConta);
+        service.ativarDesativarConta(numeroDaConta);
 
         System.out.println("Conta encerrada com sucesso!");
         System.out.println("Pressione ENTER para voltar ao menu principal");
         teclado.next();
+
     }
 
     private static void consultarSaldo() {

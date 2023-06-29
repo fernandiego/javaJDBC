@@ -20,7 +20,6 @@ public class ContaService {
     }
 
 
-
     public BigDecimal consultarSaldo(Integer numeroDaConta) {
         var conta = buscarContaPorNumero(numeroDaConta);
         return conta.getSaldo();
@@ -43,6 +42,10 @@ public class ContaService {
             throw new RegraDeNegocioException("Saldo insuficiente!");
         }
 
+        if (!conta.getEstaAtiva()) {
+            throw new RegraDeNegocioException("Conta não está ativa");
+        }
+
         Connection conn = connection.recuperarConexao();
         new ContaDAO(conn).alterarSacar(conta.getNumero(), valor);
     }
@@ -57,10 +60,20 @@ public class ContaService {
         new ContaDAO(conn).deletarConta(numeroConta);
     }
 
-       public Conta buscarContaPorNumero(Integer numero) {
+    public void ativarDesativarConta(Integer numeroConta) {
+        var conta = buscarContaPorNumero(numeroConta);
+        if (conta.possuiSaldo()) {
+            throw new RegraDeNegocioException("Conta não pode ser encerrada pois ainda possui saldo!");
+        }
+
+        Connection conn = connection.recuperarConexao();
+        new ContaDAO(conn).ativaDesativaConta(numeroConta);
+    }
+
+    public Conta buscarContaPorNumero(Integer numero) {
         Connection conn = connection.recuperarConexao();
         Conta conta = new ContaDAO(conn).listarPorNumero(numero);
-        if(conta != null) {
+        if (conta != null) {
             return conta;
         } else {
             throw new RegraDeNegocioException("Não existe conta cadastrada com esse número!");
@@ -72,8 +85,11 @@ public class ContaService {
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
             throw new RegraDeNegocioException("Valor do deposito deve ser superior a zero!");
         }
+        if (!conta.getEstaAtiva()) {
+            throw new RegraDeNegocioException("Conta não está ativa");
+        }
 
-       Connection conn = connection.recuperarConexao();
+        Connection conn = connection.recuperarConexao();
         new ContaDAO(conn).alterar(conta.getNumero(), valor);
     }
 
